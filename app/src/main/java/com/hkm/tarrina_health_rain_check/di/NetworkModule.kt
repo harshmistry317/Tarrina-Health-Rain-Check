@@ -1,6 +1,9 @@
 package com.hkm.tarrina_health_rain_check.di
 
+import android.app.Application
 import com.hkm.tarrina_health_rain_check.BuildConfig
+import com.hkm.tarrina_health_rain_check.data.datasource.RainCheckDataSource
+import com.hkm.tarrina_health_rain_check.data.network.RainCheckApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,6 +14,7 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 import javax.inject.Singleton
 
 
@@ -18,7 +22,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    class HeaderInterceptor() : Interceptor {
+    class HeaderInterceptor @Inject constructor() : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val original = chain.request()
 
@@ -37,8 +41,8 @@ object NetworkModule {
         }
     }
 
+
     @Provides
-    @Singleton
     fun provideHeaderInterceptor(): Interceptor = HeaderInterceptor()
 
     @Provides
@@ -78,5 +82,18 @@ object NetworkModule {
             .addConverterFactory(gsonConverterFactory)
             .build()
 
+
+    @Provides
+    @Singleton
+    fun provideRainCheckApi(retrofit: Retrofit) : RainCheckApi = retrofit.create(RainCheckApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRainCheckDataSource(
+        application: Application,
+        rainCheckApi: RainCheckApi
+    ): RainCheckDataSource = RainCheckDataSource(application,
+        rainCheckApi
+    )
 
 }

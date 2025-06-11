@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -85,4 +86,7 @@ dependencies {
 
     // logging-interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    //permission
+    implementation ("com.google.accompanist:accompanist-permissions:0.37.3")
 }

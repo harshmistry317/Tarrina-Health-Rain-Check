@@ -4,7 +4,7 @@ import android.content.Context
 import com.hkm.tarrina_health_rain_check.R
 import retrofit2.Response
 
-abstract class BaseDataSource(private val context: Context) {
+open class BaseDataSource(private val context: Context) {
 
     suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>): NetworkResult<T> {
         return if (Utils.isInternetAvailable(context)) {
@@ -13,9 +13,9 @@ abstract class BaseDataSource(private val context: Context) {
                 if (response.isSuccessful) {
                     response.body()?.let {
                         NetworkResult.Success(it)
-                    } ?: NetworkResult.Error(context.getString(R.string.something_went_wrong))
+                    } ?: NetworkResult.Error(context.getString(R.string.something_went_wrong),response.body())
                 } else {
-                    NetworkResult.Error(response.message(), response.code())
+                    NetworkResult.Error(response.message(),response.body())
                 }
             } catch (e: Exception) {
                 NetworkResult.Error("Exception: ${e.localizedMessage}")

@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.hkm.tarrina_health_rain_check.screens.landing.RainCheckLandingRoot
 import com.hkm.tarrina_health_rain_check.screens.landing.RainCheckLandingScreen
 import com.hkm.tarrina_health_rain_check.ui.theme.TarrinaHealthRainCheckTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TarrinaHealthRainCheckTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                  RainCheckLandingScreen {  }
+                    RainCheckLandingRoot()
                 }
             }
         }
